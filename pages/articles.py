@@ -50,37 +50,39 @@ plotly_config = {
     'doubleClick': 'reset',
 }
 
-# En-tête
-st.title("📦 ARTICLES")
-st.markdown("---")
-
-# Bouton Source Articles
-st.sidebar.markdown("---")
-# Créer un bouton personnalisé avec HTML/CSS
-st.sidebar.markdown("""
-<style>
-    .stButton > button {
-        width: 100%;
-        background-color: #1f77b4;
-        color: white;
-        font-weight: bold;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-uploaded_file_articles = st.sidebar.file_uploader(
-    "Source_Articles",
-    type=['xlsx', 'xls'],
-    help="Téléchargez le fichier Excel source des articles",
-    key="upload_articles"
-)
+# En-tête avec bouton Source Articles
+col_title, col_button = st.columns([3, 1])
+with col_title:
+    st.title("📦 ARTICLES")
+with col_button:
+    st.markdown("<br>", unsafe_allow_html=True)  # Alignement vertical
+    uploaded_file_articles = st.file_uploader(
+        "Source_Articles",
+        type=['xlsx', 'xls', 'csv'],
+        help="Téléchargez le fichier Excel ou CSV source des articles",
+        key="upload_articles",
+        label_visibility="visible"
+    )
 
 if uploaded_file_articles is not None:
-    with open('1.xlsx', 'wb') as f:
-        f.write(uploaded_file_articles.getbuffer())
-    st.sidebar.success("✅ Fichier Articles téléchargé avec succès !")
+    # Déterminer l'extension du fichier
+    file_extension = uploaded_file_articles.name.split('.')[-1].lower()
+    
+    if file_extension in ['xlsx', 'xls']:
+        # Fichier Excel
+        with open('1.xlsx', 'wb') as f:
+            f.write(uploaded_file_articles.getbuffer())
+        st.success("✅ Fichier Excel Articles téléchargé avec succès !")
+    elif file_extension == 'csv':
+        # Fichier CSV - convertir en Excel
+        df_csv = pd.read_csv(uploaded_file_articles)
+        df_csv.to_excel('1.xlsx', index=False)
+        st.success("✅ Fichier CSV Articles converti et téléchargé avec succès !")
+    
     st.cache_data.clear()
     st.rerun()
+
+st.markdown("---")
 
 # Bouton de rafraîchissement manuel pour ARTICLES
 if st.sidebar.button("🔄 Actualiser Articles", use_container_width=True, type="primary", key="refresh_articles"):
