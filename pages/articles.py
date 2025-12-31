@@ -80,8 +80,8 @@ with col_buttons:
             padding: 0 !important;
             background: transparent !important;
         }
-        /* Rendre invisibles les instructions / limites, quelle que soit la structure */
-        div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] * {
+        /* Rendre invisibles les instructions / limites, sans impacter le bouton */
+        div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] *:not(button):not(button *) {
             color: transparent !important;
             font-size: 0 !important;
             line-height: 0 !important;
