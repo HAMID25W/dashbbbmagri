@@ -54,13 +54,24 @@ plotly_config = {
 st.title("📦 ARTICLES")
 st.markdown("---")
 
-# Upload de fichier Excel pour ARTICLES
+# Bouton Source Articles
 st.sidebar.markdown("---")
-st.sidebar.markdown("### 📤 Mettre à jour les données ARTICLES")
+# Créer un bouton personnalisé avec HTML/CSS
+st.sidebar.markdown("""
+<style>
+    .stButton > button {
+        width: 100%;
+        background-color: #1f77b4;
+        color: white;
+        font-weight: bold;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 uploaded_file_articles = st.sidebar.file_uploader(
-    "Télécharger un nouveau fichier Excel (Articles)",
+    "Source_Articles",
     type=['xlsx', 'xls'],
-    help="Téléchargez un fichier Excel pour mettre à jour les données articles",
+    help="Téléchargez le fichier Excel source des articles",
     key="upload_articles"
 )
 
