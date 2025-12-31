@@ -50,96 +50,133 @@ plotly_config = {
     'doubleClick': 'reset',
 }
 
-# En-tête avec bouton Source Articles
-col_title, col_button = st.columns([3, 1])
+# En-tête avec boutons Source Articles et Actualiser
+col_title, col_buttons = st.columns([3, 1])
 with col_title:
     st.title("📦 ARTICLES")
-with col_button:
+with col_buttons:
     st.markdown("<br>", unsafe_allow_html=True)  # Alignement vertical
-    # Style personnalisé : masquer les éléments indésirables et designer le bouton
-    st.markdown("""
-    <style>
-    /* Masquer le label "Source_Articles" */
-    div[data-testid="stFileUploader"] > label {
-        display: none !important;
-    }
-    /* Masquer toute la zone de drag-and-drop et tous ses contenus */
-    div[data-testid="stFileUploader"] > div:first-child {
-        display: none !important;
-    }
-    /* Masquer le texte "Glissez-déposez le fichier ici" et "Limite de 200 Mo..." */
-    div[data-testid="stFileUploader"] p,
-    div[data-testid="stFileUploader"] small,
-    div[data-testid="stFileUploader"] span[class*="caption"],
-    div[data-testid="stFileUploader"] div[class*="caption"] {
-        display: none !important;
-    }
-    /* Designer le bouton "Source_Articles" */
-    div[data-testid="stFileUploader"] button {
-        background-color: #1f77b4 !important;
-        color: white !important;
-        border: 2px solid #1f77b4 !important;
-        border-radius: 8px !important;
-        padding: 0.6rem 1.2rem !important;
-        font-weight: 600 !important;
-        font-size: 0.95rem !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
-        width: 100% !important;
-        position: relative !important;
-    }
-    /* Effet hover */
-    div[data-testid="stFileUploader"] button:hover {
-        background-color: #1565a0 !important;
-        border-color: #1565a0 !important;
-        box-shadow: 0 4px 8px rgba(31, 119, 180, 0.3) !important;
-        transform: translateY(-1px) !important;
-    }
-    /* Effet actif */
-    div[data-testid="stFileUploader"] button:active {
-        transform: translateY(0) !important;
-        box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
-    }
-    /* Remplacer le texte par "Source_Articles" */
-    div[data-testid="stFileUploader"] button > * {
-        display: none !important;
-    }
-    div[data-testid="stFileUploader"] button::after {
-        content: "Source_Articles" !important;
-        display: inline-block !important;
-    }
-    </style>
-    <script>
-    // Script pour remplacer le texte du bouton et masquer les éléments
-    setTimeout(function() {
-        const fileUploader = document.querySelector('div[data-testid="stFileUploader"]');
-        if (fileUploader) {
-            // Masquer tous les paragraphes et petits textes
-            const paragraphs = fileUploader.querySelectorAll('p, small, span[class*="caption"]');
-            paragraphs.forEach(el => el.style.display = 'none');
-            
-            // Remplacer le texte du bouton
-            const button = fileUploader.querySelector('button');
-            if (button) {
-                const spans = button.querySelectorAll('span');
-                spans.forEach(span => {
-                    if (span.textContent.includes('Browse') || span.textContent.includes('Parcourir')) {
-                        span.textContent = 'Source_Articles';
-                    }
-                });
-            }
+    # Colonnes pour les deux boutons
+    col_source, col_actualiser = st.columns(2)
+    
+    with col_source:
+        # Style personnalisé : masquer les éléments indésirables et designer le bouton
+        st.markdown("""
+        <style>
+        /* Masquer le label "Source_Articles" */
+        div[data-testid="stFileUploader"] > label {
+            display: none !important;
         }
-    }, 100);
-    </script>
-    """, unsafe_allow_html=True)
-    uploaded_file_articles = st.file_uploader(
-        "Source_Articles",
-        type=['xlsx', 'xls', 'csv'],
-        help="Cliquez pour télécharger le fichier Excel ou CSV",
-        key="upload_articles",
-        label_visibility="collapsed"
-    )
+        /* Masquer toute la zone de drag-and-drop et tous ses contenus */
+        div[data-testid="stFileUploader"] > div:first-child {
+            display: none !important;
+        }
+        /* Masquer le texte "Glissez-déposez le fichier ici" et "Limite de 200 Mo..." */
+        div[data-testid="stFileUploader"] p,
+        div[data-testid="stFileUploader"] small,
+        div[data-testid="stFileUploader"] span[class*="caption"],
+        div[data-testid="stFileUploader"] div[class*="caption"] {
+            display: none !important;
+        }
+        /* Designer le bouton "Source_Articles" */
+        div[data-testid="stFileUploader"] button {
+            background-color: #1f77b4 !important;
+            color: white !important;
+            border: 2px solid #1f77b4 !important;
+            border-radius: 8px !important;
+            padding: 0.6rem 0.8rem !important;
+            font-weight: 600 !important;
+            font-size: 0.85rem !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
+            width: 100% !important;
+            position: relative !important;
+        }
+        /* Effet hover */
+        div[data-testid="stFileUploader"] button:hover {
+            background-color: #1565a0 !important;
+            border-color: #1565a0 !important;
+            box-shadow: 0 4px 8px rgba(31, 119, 180, 0.3) !important;
+            transform: translateY(-1px) !important;
+        }
+        /* Effet actif */
+        div[data-testid="stFileUploader"] button:active {
+            transform: translateY(0) !important;
+            box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
+        }
+        /* Remplacer le texte par "Source_Articles" */
+        div[data-testid="stFileUploader"] button > * {
+            display: none !important;
+        }
+        div[data-testid="stFileUploader"] button::after {
+            content: "Source_Articles" !important;
+            display: inline-block !important;
+        }
+        </style>
+        <script>
+        // Script pour remplacer le texte du bouton et masquer les éléments
+        setTimeout(function() {
+            const fileUploader = document.querySelector('div[data-testid="stFileUploader"]');
+            if (fileUploader) {
+                // Masquer tous les paragraphes et petits textes
+                const paragraphs = fileUploader.querySelectorAll('p, small, span[class*="caption"]');
+                paragraphs.forEach(el => el.style.display = 'none');
+                
+                // Remplacer le texte du bouton
+                const button = fileUploader.querySelector('button');
+                if (button) {
+                    const spans = button.querySelectorAll('span');
+                    spans.forEach(span => {
+                        if (span.textContent.includes('Browse') || span.textContent.includes('Parcourir')) {
+                            span.textContent = 'Source_Articles';
+                        }
+                    });
+                }
+            }
+        }, 100);
+        </script>
+        """, unsafe_allow_html=True)
+        uploaded_file_articles = st.file_uploader(
+            "Source_Articles",
+            type=['xlsx', 'xls', 'csv'],
+            help="Cliquez pour télécharger le fichier Excel ou CSV",
+            key="upload_articles",
+            label_visibility="collapsed"
+        )
+    
+    with col_actualiser:
+        # Style pour le bouton Actualiser
+        st.markdown("""
+        <style>
+        button[key="refresh_articles"] {
+            background-color: #28a745 !important;
+            color: white !important;
+            border: 2px solid #28a745 !important;
+            border-radius: 8px !important;
+            padding: 0.6rem 0.8rem !important;
+            font-weight: 600 !important;
+            font-size: 0.85rem !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2) !important;
+            width: 100% !important;
+        }
+        button[key="refresh_articles"]:hover {
+            background-color: #218838 !important;
+            border-color: #218838 !important;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3) !important;
+            transform: translateY(-1px) !important;
+        }
+        button[key="refresh_articles"]:active {
+            transform: translateY(0) !important;
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2) !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        if st.button("🔄 Actualiser", key="refresh_articles", use_container_width=True):
+            st.cache_data.clear()
+            st.rerun()
 
 if uploaded_file_articles is not None:
     # Déterminer l'extension du fichier
@@ -160,11 +197,6 @@ if uploaded_file_articles is not None:
     st.rerun()
 
 st.markdown("---")
-
-# Bouton de rafraîchissement manuel pour ARTICLES
-if st.sidebar.button("🔄 Actualiser Articles", use_container_width=True, type="primary", key="refresh_articles"):
-    st.cache_data.clear()
-    st.rerun()
 
 # Charger les données ARTICLES
 df, file_info = load_data('1.xlsx')
