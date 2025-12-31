@@ -56,54 +56,32 @@ with col_title:
     st.title("📦 ARTICLES")
 with col_button:
     st.markdown("<br>", unsafe_allow_html=True)  # Alignement vertical
-    # Style personnalisé pour masquer drag-and-drop et Browse files
+    # Style personnalisé : masquer le label et remplacer "Browse files" par "Source_Articles"
     st.markdown("""
     <style>
-    /* Masquer toute la première div (zone de drop) */
-    div[data-testid="stFileUploader"] > div:first-of-type {
-        display: none !important;
-    }
-    /* Masquer tous les boutons */
-    div[data-testid="stFileUploader"] button {
-        display: none !important;
-    }
-    /* Masquer tous les paragraphes et petits textes */
-    div[data-testid="stFileUploader"] p,
-    div[data-testid="stFileUploader"] small,
-    div[data-testid="stFileUploader"] span {
-        display: none !important;
-    }
-    /* Styliser le label "Source_Articles" comme un bouton cliquable */
+    /* Masquer le label "Source_Articles" */
     div[data-testid="stFileUploader"] > label {
-        background-color: #1f77b4 !important;
-        color: white !important;
-        padding: 0.5rem 1rem !important;
-        border-radius: 0.25rem !important;
-        cursor: pointer !important;
-        text-align: center !important;
-        font-weight: 500 !important;
-        display: inline-block !important;
-        width: 100% !important;
-        border: 1px solid #1f77b4 !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
+        display: none !important;
     }
-    div[data-testid="stFileUploader"] > label:hover {
-        background-color: #1a66a0 !important;
+    /* Remplacer le texte "Browse files" par "Source_Articles" */
+    div[data-testid="stFileUploader"] button::after {
+        content: "Source_Articles" !important;
     }
-    /* Cacher le conteneur principal */
-    div[data-testid="stFileUploader"] {
-        border: none !important;
-        padding: 0 !important;
+    div[data-testid="stFileUploader"] button {
+        font-size: inherit !important;
+    }
+    /* Masquer le texte original du bouton */
+    div[data-testid="stFileUploader"] button > span:first-child {
+        display: none !important;
     }
     </style>
     """, unsafe_allow_html=True)
     uploaded_file_articles = st.file_uploader(
         "Source_Articles",
         type=['xlsx', 'xls', 'csv'],
-        help="Téléchargez le fichier Excel ou CSV source des articles",
+        help="Cliquez pour télécharger le fichier Excel ou CSV",
         key="upload_articles",
-        label_visibility="visible"
+        label_visibility="collapsed"
     )
 
 if uploaded_file_articles is not None:
