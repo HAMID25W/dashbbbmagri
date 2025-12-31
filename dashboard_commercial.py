@@ -26,12 +26,8 @@ else:
     st.sidebar.markdown("### BBM AGRI")
     st.sidebar.markdown("Tableau de Bord Commercial")
 
-# En-tête avec logo - titre aligné à droite
-col_header1, col_header2 = st.columns([3, 1])
-with col_header1:
-    st.markdown("")  # Espace vide
-with col_header2:
-    st.title("📊 Tableau de Bord Commercial")
+# En-tête - titre aligné à gauche
+st.title("📊 Tableau de Bord Commercial")
 st.markdown("---")
 
 # Fonction pour charger les données
@@ -161,7 +157,12 @@ df_filtered = df_filtered[
 
 # Métriques principales
 date_fichier = file_info['date_modification'].strftime("%d/%m/%Y")
-st.markdown(f"### 📈 KPIs Articles ({date_fichier})")
+# Mettre en valeur le sous-titre KPIs
+st.markdown(f"""
+<div style='background-color: #f0f2f6; padding: 15px; border-radius: 10px; border-left: 5px solid #1f77b4; margin-bottom: 20px;'>
+    <h2 style='color: #1f77b4; margin: 0; font-weight: bold;'>📈 KPIs Articles ({date_fichier})</h2>
+</div>
+""", unsafe_allow_html=True)
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
@@ -185,15 +186,16 @@ with col5:
 
 st.markdown("---")
 
-# Configuration des graphiques Plotly (pas de barre d'outils, plein écran sur double-clic, pas d'interaction clavier)
+# Configuration des graphiques Plotly (plein écran sur double-clic)
 plotly_config = {
-    'displayModeBar': 'hover',  # Affiche la barre au survol pour le plein écran
+    'displayModeBar': True,  # Affiche la barre d'outils pour le plein écran
     'displaylogo': False,    # Cache le logo Plotly
     'scrollZoom': False,     # Désactive le zoom avec la molette
     'showAxisDragHandles': False,  # Cache les poignées de redimensionnement
     'editable': False,       # Désactive l'édition
     'staticPlot': False,     # Garde l'interactivité pour le hover et double-clic
-    'modeBarButtonsToRemove': ['pan2d', 'lasso2d', 'select2d', 'autoScale2d', 'resetScale2d'],  # Garde seulement le bouton plein écran
+    'modeBarButtonsToRemove': ['pan2d', 'lasso2d', 'select2d', 'autoScale2d', 'resetScale2d', 'zoomIn2d', 'zoomOut2d'],  # Garde seulement le bouton plein écran
+    'doubleClick': 'reset',  # Double-clic pour réinitialiser (plein écran)
 }
 
 # Graphiques
