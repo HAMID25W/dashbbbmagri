@@ -68,33 +68,29 @@ with col_buttons:
             display: none !important;
         }
         /*
-         * Version robuste (toutes versions Streamlit) :
-         * masquer tout ce qui est affiché dans le file_uploader
-         * sauf le bouton et l'input fichier nécessaire.
-         * Cela supprime forcément "Drag and drop file here" et "Limit 200MB".
+         * IMPORTANT :
+         * Ne pas "display:none" les wrappers internes, sinon le bouton disparaît
+         * (le bouton est souvent dans un div parent).
+         *
+         * On masque donc le texte (drag&drop + limit) en le rendant invisible,
+         * tout en gardant le bouton cliquable pour ouvrir la fenêtre de fichier.
          */
-        div[data-testid="stFileUploader"] *:not(button):not(button *):not(input[type="file"]) {
-            display: none !important;
-        }
-
-        /* Masquer le texte "Drag and drop..." + "Limit 200MB" (Streamlit récent) */
-        div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzoneInstructions"] {
-            display: none !important;
-        }
-        /* Masquer les légendes / captions / limites (fallback) */
-        div[data-testid="stFileUploader"] p,
-        div[data-testid="stFileUploader"] small,
-        div[data-testid="stFileUploader"] span[class*="caption"],
-        div[data-testid="stFileUploader"] div[class*="caption"],
-        div[data-testid="stFileUploader"] [data-testid="stCaptionContainer"] {
-            display: none !important;
-        }
-
-        /* Supprimer l'aspect "zone de drop" tout en gardant le bouton */
         div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] {
             border: 0 !important;
             padding: 0 !important;
             background: transparent !important;
+        }
+        /* Rendre invisibles les instructions / limites, quelle que soit la structure */
+        div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] * {
+            color: transparent !important;
+            font-size: 0 !important;
+            line-height: 0 !important;
+            margin: 0 !important;
+        }
+        /* Ne pas toucher à l'input (il est souvent caché mais nécessaire) */
+        div[data-testid="stFileUploader"] input[type="file"] {
+            font-size: initial !important;
+            line-height: initial !important;
         }
         /* Designer le bouton et masquer son contenu original */
         div[data-testid="stFileUploader"] button {
@@ -110,6 +106,7 @@ with col_buttons:
             box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
             width: 100% !important;
             position: relative !important;
+            line-height: normal !important;
         }
         /* Masquer tout le contenu du bouton */
         div[data-testid="stFileUploader"] button > * {
