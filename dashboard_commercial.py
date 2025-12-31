@@ -30,7 +30,6 @@ else:
 col_header1, col_header2, col_header3 = st.columns([1, 2, 1])
 with col_header2:
     st.title("📊 Tableau de Bord Commercial")
-    st.markdown("**BBM AGRI - Analyse des données commerciales**")
 st.markdown("---")
 
 # Fonction pour charger les données
