@@ -175,7 +175,7 @@ st.markdown("---")
 # Configuration des graphiques Plotly (pas de barre d'outils, plein écran sur double-clic, pas d'interaction clavier)
 plotly_config = {
     'displayModeBar': False,  # Cache la barre d'outils
-    'doubleClick': 'reset',  # Double-clic pour plein écran
+    'doubleClick': 'autosize',  # Double-clic pour plein écran
     'displaylogo': False,    # Cache le logo Plotly
     'scrollZoom': False,     # Désactive le zoom avec la molette
     'showAxisDragHandles': False,  # Cache les poignées de redimensionnement
