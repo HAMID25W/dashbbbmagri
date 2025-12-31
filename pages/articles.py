@@ -56,25 +56,64 @@ with col_title:
     st.title("📦 ARTICLES")
 with col_button:
     st.markdown("<br>", unsafe_allow_html=True)  # Alignement vertical
-    # Style personnalisé : masquer le label et remplacer "Browse files" par "Source_Articles"
+    # Style personnalisé : masquer tous les éléments sauf le bouton "Source_Articles"
     st.markdown("""
     <style>
     /* Masquer le label "Source_Articles" */
     div[data-testid="stFileUploader"] > label {
         display: none !important;
     }
-    /* Remplacer le texte "Browse files" par "Source_Articles" */
-    div[data-testid="stFileUploader"] button::after {
-        content: "Source_Articles" !important;
-    }
-    div[data-testid="stFileUploader"] button {
-        font-size: inherit !important;
-    }
-    /* Masquer le texte original du bouton */
-    div[data-testid="stFileUploader"] button > span:first-child {
+    /* Masquer la zone "Drag and drop file here" */
+    div[data-testid="stFileUploader"] > div[data-baseweb="file-uploader"] {
         display: none !important;
     }
+    /* Masquer le texte "Limit 200MB per file • XLSX, XLS, CSV" */
+    div[data-testid="stFileUploader"] p,
+    div[data-testid="stFileUploader"] small,
+    div[data-testid="stFileUploader"] span[class*="caption"] {
+        display: none !important;
+    }
+    /* Remplacer le texte "Browse files" par "Source_Articles" */
+    div[data-testid="stFileUploader"] button {
+        position: relative;
+    }
+    /* Masquer le texte original du bouton */
+    div[data-testid="stFileUploader"] button > * {
+        visibility: hidden;
+    }
+    /* Ajouter "Source_Articles" comme contenu du bouton */
+    div[data-testid="stFileUploader"] button::before {
+        content: "Source_Articles";
+        visibility: visible;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+    }
     </style>
+    <script>
+    // Script pour remplacer le texte du bouton
+    window.addEventListener('load', function() {
+        const fileUploader = document.querySelector('div[data-testid="stFileUploader"]');
+        if (fileUploader) {
+            const button = fileUploader.querySelector('button');
+            if (button) {
+                // Trouver et remplacer le texte du bouton
+                const spans = button.querySelectorAll('span');
+                spans.forEach(span => {
+                    if (span.textContent.trim() === 'Browse files' || span.textContent.includes('Browse')) {
+                        span.textContent = 'Source_Articles';
+                    }
+                });
+                // Si le texte est directement dans le bouton
+                if (button.textContent.includes('Browse files')) {
+                    button.textContent = button.textContent.replace('Browse files', 'Source_Articles');
+                }
+            }
+        }
+    });
+    </script>
     """, unsafe_allow_html=True)
     uploaded_file_articles = st.file_uploader(
         "Source_Articles",
