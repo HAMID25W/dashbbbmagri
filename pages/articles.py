@@ -56,16 +56,18 @@ with col_title:
     st.title("📦 ARTICLES")
 with col_button:
     st.markdown("<br>", unsafe_allow_html=True)  # Alignement vertical
-    # Style personnalisé pour rendre le file_uploader plus bouton-like
+    # Style personnalisé pour masquer drag-and-drop et Browse files, rendre le label cliquable
     st.markdown("""
     <style>
-    /* Cacher la zone de drag-and-drop et rendre le label cliquable */
-    div[data-testid="stFileUploader"] {
-        border: none;
-    }
+    /* Cacher complètement la zone de drag-and-drop et le texte associé */
     div[data-testid="stFileUploader"] > div:first-child {
-        display: none;
+        display: none !important;
     }
+    /* Cacher le bouton "Browse files" */
+    div[data-testid="stFileUploader"] button {
+        display: none !important;
+    }
+    /* Styliser le label "Source_Articles" comme un bouton cliquable */
     div[data-testid="stFileUploader"] label {
         background-color: #1f77b4;
         color: white;
@@ -77,9 +79,19 @@ with col_button:
         display: inline-block;
         width: 100%;
         border: 1px solid #1f77b4;
+        margin: 0;
     }
     div[data-testid="stFileUploader"] label:hover {
         background-color: #1a66a0;
+    }
+    /* Cacher les textes de limite et d'extension */
+    div[data-testid="stFileUploader"] small {
+        display: none !important;
+    }
+    /* S'assurer que le conteneur principal n'a pas de bordure */
+    div[data-testid="stFileUploader"] {
+        border: none;
+        padding: 0;
     }
     </style>
     """, unsafe_allow_html=True)
