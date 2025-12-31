@@ -67,19 +67,34 @@ with col_buttons:
         div[data-testid="stFileUploader"] > label {
             display: none !important;
         }
-        /* Masquer toute la zone de drag-and-drop (première div avec bordure) */
-        div[data-testid="stFileUploader"] > div[style*="border"] {
+        /*
+         * Version robuste (toutes versions Streamlit) :
+         * masquer tout ce qui est affiché dans le file_uploader
+         * sauf le bouton et l'input fichier nécessaire.
+         * Cela supprime forcément "Drag and drop file here" et "Limit 200MB".
+         */
+        div[data-testid="stFileUploader"] *:not(button):not(button *):not(input[type="file"]) {
             display: none !important;
         }
-        div[data-testid="stFileUploader"] > div:first-child {
+
+        /* Masquer le texte "Drag and drop..." + "Limit 200MB" (Streamlit récent) */
+        div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzoneInstructions"] {
             display: none !important;
         }
-        /* Masquer tous les textes (drag-and-drop, limites, etc.) */
+        /* Masquer les légendes / captions / limites (fallback) */
         div[data-testid="stFileUploader"] p,
         div[data-testid="stFileUploader"] small,
         div[data-testid="stFileUploader"] span[class*="caption"],
-        div[data-testid="stFileUploader"] div[class*="caption"] {
+        div[data-testid="stFileUploader"] div[class*="caption"],
+        div[data-testid="stFileUploader"] [data-testid="stCaptionContainer"] {
             display: none !important;
+        }
+
+        /* Supprimer l'aspect "zone de drop" tout en gardant le bouton */
+        div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] {
+            border: 0 !important;
+            padding: 0 !important;
+            background: transparent !important;
         }
         /* Designer le bouton et masquer son contenu original */
         div[data-testid="stFileUploader"] button {
@@ -126,32 +141,6 @@ with col_buttons:
             box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
         }
         </style>
-        <script>
-        // Script pour masquer les éléments et remplacer le texte du bouton
-        function replaceButtonText() {
-            const fileUploader = document.querySelector('div[data-testid="stFileUploader"]');
-            if (fileUploader) {
-                // Masquer tous les éléments de texte
-                const toHide = fileUploader.querySelectorAll('p, small, span[class*="caption"], div[class*="caption"]');
-                toHide.forEach(el => el.style.display = 'none');
-                
-                // Masquer la zone de drop
-                const dropZone = fileUploader.querySelector('div[style*="border"]');
-                if (dropZone) dropZone.style.display = 'none';
-                
-                // Remplacer le texte du bouton
-                const button = fileUploader.querySelector('button');
-                if (button) {
-                    button.textContent = '';
-                    button.innerHTML = '';
-                    const spans = button.querySelectorAll('span');
-                    spans.forEach(span => span.style.display = 'none');
-                }
-            }
-        }
-        setTimeout(replaceButtonText, 100);
-        setTimeout(replaceButtonText, 500);
-        </script>
         """, unsafe_allow_html=True)
         uploaded_file_articles = st.file_uploader(
             "Source_Articles",
