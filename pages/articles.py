@@ -56,42 +56,48 @@ with col_title:
     st.title("📦 ARTICLES")
 with col_button:
     st.markdown("<br>", unsafe_allow_html=True)  # Alignement vertical
-    # Style personnalisé pour masquer drag-and-drop et Browse files, rendre le label cliquable
+    # Style personnalisé pour masquer drag-and-drop et Browse files
     st.markdown("""
     <style>
-    /* Cacher complètement la zone de drag-and-drop et le texte associé */
-    div[data-testid="stFileUploader"] > div:first-child {
+    /* Cacher toute la zone de drag-and-drop (première div dans le file uploader) */
+    div[data-testid="stFileUploader"] > div[style*="border"] {
+        display: none !important;
+    }
+    /* Cacher le texte "Drag and drop file here" */
+    div[data-testid="stFileUploader"] p {
         display: none !important;
     }
     /* Cacher le bouton "Browse files" */
-    div[data-testid="stFileUploader"] button {
+    div[data-testid="stFileUploader"] button[type="button"] {
+        display: none !important;
+    }
+    /* Cacher les textes de limite */
+    div[data-testid="stFileUploader"] small,
+    div[data-testid="stFileUploader"] span[class*="caption"] {
         display: none !important;
     }
     /* Styliser le label "Source_Articles" comme un bouton cliquable */
-    div[data-testid="stFileUploader"] label {
-        background-color: #1f77b4;
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 0.25rem;
-        cursor: pointer;
-        text-align: center;
-        font-weight: 500;
-        display: inline-block;
-        width: 100%;
-        border: 1px solid #1f77b4;
-        margin: 0;
+    div[data-testid="stFileUploader"] > label {
+        background-color: #1f77b4 !important;
+        color: white !important;
+        padding: 0.5rem 1rem !important;
+        border-radius: 0.25rem !important;
+        cursor: pointer !important;
+        text-align: center !important;
+        font-weight: 500 !important;
+        display: inline-block !important;
+        width: 100% !important;
+        border: 1px solid #1f77b4 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
     }
-    div[data-testid="stFileUploader"] label:hover {
-        background-color: #1a66a0;
+    div[data-testid="stFileUploader"] > label:hover {
+        background-color: #1a66a0 !important;
     }
-    /* Cacher les textes de limite et d'extension */
-    div[data-testid="stFileUploader"] small {
-        display: none !important;
-    }
-    /* S'assurer que le conteneur principal n'a pas de bordure */
+    /* Cacher le conteneur avec bordure */
     div[data-testid="stFileUploader"] {
-        border: none;
-        padding: 0;
+        border: none !important;
+        padding: 0 !important;
     }
     </style>
     """, unsafe_allow_html=True)
