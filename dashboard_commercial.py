@@ -172,11 +172,15 @@ with col5:
 
 st.markdown("---")
 
-# Configuration des graphiques Plotly (pas de barre d'outils, plein écran sur double-clic)
+# Configuration des graphiques Plotly (pas de barre d'outils, plein écran sur double-clic, pas d'interaction clavier)
 plotly_config = {
     'displayModeBar': False,  # Cache la barre d'outils
     'doubleClick': 'reset',  # Double-clic pour plein écran
     'displaylogo': False,    # Cache le logo Plotly
+    'scrollZoom': False,     # Désactive le zoom avec la molette
+    'showAxisDragHandles': False,  # Cache les poignées de redimensionnement
+    'editable': False,       # Désactive l'édition
+    'staticPlot': False,     # Garde l'interactivité pour le hover et double-clic
 }
 
 # Graphiques
@@ -196,6 +200,8 @@ with col1:
         names='Famille',
         title="Top 10 Familles"
     )
+    # Désactiver les interactions au clavier
+    fig_famille.update_layout(dragmode=False)
     st.plotly_chart(fig_famille, use_container_width=True, config=plotly_config)
 
 with col2:
@@ -214,6 +220,8 @@ with col2:
         labels={'Fournisseur': 'Fournisseur', 'Nombre': 'Nombre d\'articles'}
     )
     fig_fournisseur.update_xaxes(tickangle=45)
+    # Désactiver les interactions au clavier
+    fig_fournisseur.update_layout(dragmode=False)
     st.plotly_chart(fig_fournisseur, use_container_width=True, config=plotly_config)
 
 # Graphique de marge
@@ -228,6 +236,8 @@ with col1:
         title="Distribution des marges (%)",
         labels={'Marge %': 'Marge (%)', 'count': 'Nombre d\'articles'}
     )
+    # Désactiver les interactions au clavier
+    fig_marge.update_layout(dragmode=False)
     st.plotly_chart(fig_marge, use_container_width=True, config=plotly_config)
 
 with col2:
@@ -260,6 +270,8 @@ with col2:
             title="Relation Prix d'achat vs Prix de vente",
             labels={'Prix d\'achat': 'Prix d\'achat (DH)', 'Prix de vente': 'Prix de vente (DH)'}
         )
+        # Désactiver les interactions au clavier
+        fig_prix.update_layout(dragmode=False)
         st.plotly_chart(fig_prix, use_container_width=True, config=plotly_config)
     else:
         st.info("Pas assez de données pour afficher le graphique")
