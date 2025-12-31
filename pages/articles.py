@@ -59,21 +59,18 @@ with col_button:
     # Style personnalisé pour masquer drag-and-drop et Browse files
     st.markdown("""
     <style>
-    /* Cacher toute la zone de drag-and-drop (première div dans le file uploader) */
-    div[data-testid="stFileUploader"] > div[style*="border"] {
+    /* Masquer toute la première div (zone de drop) */
+    div[data-testid="stFileUploader"] > div:first-of-type {
         display: none !important;
     }
-    /* Cacher le texte "Drag and drop file here" */
-    div[data-testid="stFileUploader"] p {
+    /* Masquer tous les boutons */
+    div[data-testid="stFileUploader"] button {
         display: none !important;
     }
-    /* Cacher le bouton "Browse files" */
-    div[data-testid="stFileUploader"] button[type="button"] {
-        display: none !important;
-    }
-    /* Cacher les textes de limite */
+    /* Masquer tous les paragraphes et petits textes */
+    div[data-testid="stFileUploader"] p,
     div[data-testid="stFileUploader"] small,
-    div[data-testid="stFileUploader"] span[class*="caption"] {
+    div[data-testid="stFileUploader"] span {
         display: none !important;
     }
     /* Styliser le label "Source_Articles" comme un bouton cliquable */
@@ -94,7 +91,7 @@ with col_button:
     div[data-testid="stFileUploader"] > label:hover {
         background-color: #1a66a0 !important;
     }
-    /* Cacher le conteneur avec bordure */
+    /* Cacher le conteneur principal */
     div[data-testid="stFileUploader"] {
         border: none !important;
         padding: 0 !important;
