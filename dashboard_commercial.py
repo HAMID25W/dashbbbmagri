@@ -83,7 +83,8 @@ if uploaded_file is not None:
     st.rerun()  # Redémarre l'application automatiquement
 
 # Bouton de rafraîchissement manuel
-if st.sidebar.button("🔄 Actualiser les données", use_container_width=True, type="primary"):
+st.sidebar.markdown("---")
+if st.sidebar.button("🔄 Actualiser / Rafraîchir", use_container_width=True, type="primary"):
     st.cache_data.clear()
     st.rerun()
 
