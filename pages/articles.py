@@ -67,6 +67,16 @@ with col_buttons:
         div[data-testid="stFileUploader"] > label {
             display: none !important;
         }
+        /*
+         * Version robuste (toutes versions Streamlit) :
+         * masquer tout ce qui est affiché dans le file_uploader
+         * sauf le bouton et l'input fichier nécessaire.
+         * Cela supprime forcément "Drag and drop file here" et "Limit 200MB".
+         */
+        div[data-testid="stFileUploader"] *:not(button):not(button *):not(input[type="file"]) {
+            display: none !important;
+        }
+
         /* Masquer le texte "Drag and drop..." + "Limit 200MB" (Streamlit récent) */
         div[data-testid="stFileUploader"] [data-testid="stFileUploaderDropzoneInstructions"] {
             display: none !important;
