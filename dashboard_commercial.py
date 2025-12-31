@@ -26,8 +26,10 @@ else:
     st.sidebar.markdown("### BBM AGRI")
     st.sidebar.markdown("Tableau de Bord Commercial")
 
-# En-tête avec logo
-col_header1, col_header2, col_header3 = st.columns([1, 2, 1])
+# En-tête avec logo - titre aligné à droite
+col_header1, col_header2 = st.columns([3, 1])
+with col_header1:
+    st.markdown("")  # Espace vide
 with col_header2:
     st.title("📊 Tableau de Bord Commercial")
 st.markdown("---")
@@ -88,9 +90,14 @@ if st.sidebar.button("🔄 Actualiser les données", use_container_width=True, t
 # Sidebar - Filtres
 st.sidebar.header("🔍 Filtres")
 
-# Filtre par Type
-types = ['Tous'] + sorted(df['Type'].dropna().unique().tolist())
-type_selected = st.sidebar.selectbox("Type", types)
+# Filtre par Type - seulement si plusieurs types différents
+types_unique = df['Type'].dropna().unique().tolist()
+if len(types_unique) > 1:
+    types = ['Tous'] + sorted(types_unique)
+    type_selected = st.sidebar.selectbox("Type", types)
+else:
+    # Si tous les articles ont le même type, ne pas afficher le filtre
+    type_selected = 'Tous'
 
 # Filtre par Famille
 familles = ['Toutes'] + sorted(df['Famille'].dropna().unique().tolist())
@@ -179,13 +186,13 @@ st.markdown("---")
 
 # Configuration des graphiques Plotly (pas de barre d'outils, plein écran sur double-clic, pas d'interaction clavier)
 plotly_config = {
-    'displayModeBar': False,  # Cache la barre d'outils
-    'doubleClick': 'autosize',  # Double-clic pour plein écran
+    'displayModeBar': 'hover',  # Affiche la barre au survol pour le plein écran
     'displaylogo': False,    # Cache le logo Plotly
     'scrollZoom': False,     # Désactive le zoom avec la molette
     'showAxisDragHandles': False,  # Cache les poignées de redimensionnement
     'editable': False,       # Désactive l'édition
     'staticPlot': False,     # Garde l'interactivité pour le hover et double-clic
+    'modeBarButtonsToRemove': ['pan2d', 'lasso2d', 'select2d', 'autoScale2d', 'resetScale2d'],  # Garde seulement le bouton plein écran
 }
 
 # Graphiques
