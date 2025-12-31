@@ -187,9 +187,15 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("### 📊 Répartition par Famille")
     famille_counts = df_filtered['Famille'].value_counts().head(10)
+    # Convertir en DataFrame pour plus de compatibilité
+    df_famille = pd.DataFrame({
+        'Famille': famille_counts.index,
+        'Nombre': famille_counts.values
+    })
     fig_famille = px.pie(
-        values=famille_counts.values,
-        names=famille_counts.index,
+        df_famille,
+        values='Nombre',
+        names='Famille',
         title="Top 10 Familles"
     )
     st.plotly_chart(fig_famille, use_container_width=True)
@@ -197,11 +203,17 @@ with col1:
 with col2:
     st.markdown("### 📊 Répartition par Fournisseur")
     fournisseur_counts = df_filtered['Fournisseur principal'].value_counts().head(10)
+    # Convertir en DataFrame pour Plotly Express
+    df_fournisseur = pd.DataFrame({
+        'Fournisseur': fournisseur_counts.index,
+        'Nombre': fournisseur_counts.values
+    })
     fig_fournisseur = px.bar(
-        x=fournisseur_counts.index,
-        y=fournisseur_counts.values,
+        df_fournisseur,
+        x='Fournisseur',
+        y='Nombre',
         title="Top 10 Fournisseurs",
-        labels={'x': 'Fournisseur', 'y': 'Nombre d\'articles'}
+        labels={'Fournisseur': 'Fournisseur', 'Nombre': 'Nombre d\'articles'}
     )
     fig_fournisseur.update_xaxes(tickangle=45)
     st.plotly_chart(fig_fournisseur, use_container_width=True)
