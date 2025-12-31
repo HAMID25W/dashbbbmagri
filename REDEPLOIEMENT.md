@@ -17,10 +17,17 @@ Si Streamlit Cloud ne redéploie pas automatiquement après un `git push`, voici
 
 ### Méthode 2 : Via les paramètres de l'application
 
-1. Dans **"Manage app"**, allez dans **"Settings"**
-2. Vérifiez que **"Auto-redeploy"** est activé (si disponible)
-3. Si ce n'est pas le cas, activez-le
-4. Faites un nouveau `git push` pour déclencher le redéploiement
+**Note :** Les paramètres peuvent varier selon la version de Streamlit Cloud.
+
+1. Dans **"Manage app"**, cherchez l'onglet **"Settings"** ou **"Configuration"**
+2. Si vous ne voyez pas "Settings", essayez :
+   - Cliquez sur les **3 points** (menu) en haut à droite
+   - Ou cherchez **"App settings"** dans le menu latéral
+3. Vérifiez les paramètres suivants (s'ils sont disponibles) :
+   - **Branch** : Doit être `main`
+   - **Main file path** : Doit être `dashboard_commercial.py`
+   - **Auto-redeploy** : Si disponible, activez-le
+4. Si ces options ne sont pas visibles, utilisez la **Méthode 1** (Reboot app) ou **Méthode 3** (commit vide)
 
 ---
 
@@ -52,11 +59,18 @@ Cela crée un commit vide qui déclenchera le redéploiement.
 
 ### Vérifier les paramètres
 
-1. Allez dans **"Manage app"** → **"Settings"**
-2. Vérifiez :
-   - ✅ **Branch** : Doit être `main` (ou votre branche principale)
-   - ✅ **Main file path** : Doit être `dashboard_commercial.py`
-   - ✅ **Auto-redeploy** : Doit être activé
+**Important :** Si vous ne voyez pas les paramètres dans "Settings", c'est normal. Streamlit Cloud redéploie automatiquement par défaut lors d'un `git push`.
+
+1. Allez dans **"Manage app"**
+2. Cherchez **"Settings"**, **"Configuration"**, ou **"App settings"**
+   - Si vous ne trouvez pas, les paramètres peuvent être dans :
+     - Le menu en haut à droite (3 points)
+     - L'onglet "Settings" dans le menu latéral
+     - Directement dans "Manage app" → première section
+3. Si les paramètres ne sont pas accessibles, vérifiez :
+   - ✅ Que vous poussez sur la branche `main`
+   - ✅ Que le fichier principal est `dashboard_commercial.py`
+   - ✅ Que votre dépôt GitHub est bien connecté
 
 ### Si le redéploiement automatique ne fonctionne pas
 
