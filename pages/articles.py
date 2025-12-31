@@ -56,6 +56,33 @@ with col_title:
     st.title("📦 ARTICLES")
 with col_button:
     st.markdown("<br>", unsafe_allow_html=True)  # Alignement vertical
+    # Style personnalisé pour rendre le file_uploader plus bouton-like
+    st.markdown("""
+    <style>
+    /* Cacher la zone de drag-and-drop et rendre le label cliquable */
+    div[data-testid="stFileUploader"] {
+        border: none;
+    }
+    div[data-testid="stFileUploader"] > div:first-child {
+        display: none;
+    }
+    div[data-testid="stFileUploader"] label {
+        background-color: #1f77b4;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        text-align: center;
+        font-weight: 500;
+        display: inline-block;
+        width: 100%;
+        border: 1px solid #1f77b4;
+    }
+    div[data-testid="stFileUploader"] label:hover {
+        background-color: #1a66a0;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     uploaded_file_articles = st.file_uploader(
         "Source_Articles",
         type=['xlsx', 'xls', 'csv'],
