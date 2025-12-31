@@ -59,6 +59,9 @@ def load_data(file_path='1.xlsx'):
         st.error(f"Erreur lors du chargement du fichier : {e}")
         return pd.DataFrame(), {}
 
+# Charger les données
+df, file_info = load_data()
+
 # Upload de fichier Excel (optionnel)
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 📤 Mettre à jour les données")
@@ -78,13 +81,9 @@ if uploaded_file is not None:
     st.rerun()  # Redémarre l'application automatiquement
 
 # Bouton de rafraîchissement manuel
-st.sidebar.markdown("---")
-if st.sidebar.button("🔄 Actualiser les données", use_container_width=True):
+if st.sidebar.button("🔄 Actualiser les données", use_container_width=True, type="primary"):
     st.cache_data.clear()
     st.rerun()
-
-# Charger les données
-df, file_info = load_data()
 
 # Sidebar - Filtres
 st.sidebar.header("🔍 Filtres")
