@@ -60,106 +60,27 @@ with col_buttons:
     col_source, col_actualiser = st.columns(2)
     
     with col_source:
-        # Style personnalisé : masquer tous les éléments sauf le bouton et remplacer le texte
-        st.markdown("""
-        <style>
-        /* Masquer complètement le label "Source_Articles" */
-        div[data-testid="stFileUploader"] > label {
-            display: none !important;
-        }
-        /* Masquer toute la zone de drag-and-drop (première div avec bordure) */
-        div[data-testid="stFileUploader"] > div[style*="border"] {
-            display: none !important;
-        }
-        div[data-testid="stFileUploader"] > div:first-child {
-            display: none !important;
-        }
-        /* Masquer tous les textes (drag-and-drop, limites, etc.) */
-        div[data-testid="stFileUploader"] p,
-        div[data-testid="stFileUploader"] small,
-        div[data-testid="stFileUploader"] span[class*="caption"],
-        div[data-testid="stFileUploader"] div[class*="caption"] {
-            display: none !important;
-        }
-        /* Designer le bouton et masquer son contenu original */
-        div[data-testid="stFileUploader"] button {
-            background-color: #1f77b4 !important;
-            color: white !important;
-            border: 2px solid #1f77b4 !important;
-            border-radius: 8px !important;
-            padding: 0.6rem 0.8rem !important;
-            font-weight: 600 !important;
-            font-size: 0.85rem !important;
-            cursor: pointer !important;
-            transition: all 0.3s ease !important;
-            box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
-            width: 100% !important;
-            position: relative !important;
-        }
-        /* Masquer tout le contenu du bouton */
-        div[data-testid="stFileUploader"] button > * {
-            opacity: 0 !important;
-            font-size: 0 !important;
-        }
-        /* Ajouter "Source_Articles" comme seul texte visible */
-        div[data-testid="stFileUploader"] button::before {
-            content: "Sources_Articles" !important;
-            opacity: 1 !important;
-            font-size: 0.85rem !important;
-            position: absolute !important;
-            left: 50% !important;
-            top: 50% !important;
-            transform: translate(-50%, -50%) !important;
-            white-space: nowrap !important;
-            font-weight: 600 !important;
-        }
-        /* Effet hover */
-        div[data-testid="stFileUploader"] button:hover {
-            background-color: #1565a0 !important;
-            border-color: #1565a0 !important;
-            box-shadow: 0 4px 8px rgba(31, 119, 180, 0.3) !important;
-            transform: translateY(-1px) !important;
-        }
-        /* Effet actif */
-        div[data-testid="stFileUploader"] button:active {
-            transform: translateY(0) !important;
-            box-shadow: 0 2px 4px rgba(31, 119, 180, 0.2) !important;
-        }
-        </style>
-        <script>
-        // Script pour masquer les éléments et remplacer le texte du bouton
-        function replaceButtonText() {
-            const fileUploader = document.querySelector('div[data-testid="stFileUploader"]');
-            if (fileUploader) {
-                // Masquer tous les éléments de texte
-                const toHide = fileUploader.querySelectorAll('p, small, span[class*="caption"], div[class*="caption"]');
-                toHide.forEach(el => el.style.display = 'none');
-                
-                // Masquer la zone de drop
-                const dropZone = fileUploader.querySelector('div[style*="border"]');
-                if (dropZone) dropZone.style.display = 'none';
-                
-                // Remplacer le texte du bouton
-                const button = fileUploader.querySelector('button');
-                if (button) {
-                    button.textContent = '';
-                    button.innerHTML = '';
-                    const spans = button.querySelectorAll('span');
-                    spans.forEach(span => span.style.display = 'none');
-                }
-            }
-        }
-        setTimeout(replaceButtonText, 100);
-        setTimeout(replaceButtonText, 500);
-        </script>
-        """, unsafe_allow_html=True)
-        uploaded_file_articles = st.file_uploader(
-            "Sources_Articles",
-            type=['xlsx', 'xls', 'csv'],
-            help="Cliquez pour télécharger le fichier Excel ou CSV",
-            key="upload_articles",
-            label_visibility="collapsed"
-        )
+        # Bouton stable "Sources_Articles" (sans JS/CSS fragile)
+        if hasattr(st, "popover"):
+            # Le bouton du popover est "Sources_Articles", à gauche d'Actualiser
+            with st.popover("Sources_Articles", use_container_width=True):
+                uploaded_file_articles = st.file_uploader(
+                    "Télécharger un fichier Articles",
+                    type=['xlsx', 'xls', 'csv'],
+                    help="Cliquez pour télécharger le fichier Excel ou CSV",
+                    key="upload_articles",
+                    label_visibility="collapsed",
+                )
+        else:
+            # Fallback (anciennes versions Streamlit)
+            st.markdown("**Sources_Articles**")
+            uploaded_file_articles = st.file_uploader(
+                "",
+                type=['xlsx', 'xls', 'csv'],
+                help="Cliquez pour télécharger le fichier Excel ou CSV",
+                key="upload_articles",
+                label_visibility="collapsed",
+            )
     
     with col_actualiser:
         # Style pour le bouton Actualiser
