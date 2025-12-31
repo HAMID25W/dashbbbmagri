@@ -146,18 +146,9 @@ df_filtered = df_filtered[
     (df_filtered['Prix de vente'] <= prix_max)
 ]
 
-# Informations sur le fichier
-with st.expander("ℹ️ Informations sur le fichier"):
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("Date de création", file_info['date_creation'].strftime("%d/%m/%Y %H:%M"))
-    with col2:
-        st.metric("Dernière modification", file_info['date_modification'].strftime("%d/%m/%Y %H:%M"))
-    with col3:
-        st.metric("Taille du fichier", f"{file_info['taille']:.2f} KB")
-
 # Métriques principales
-st.markdown("### 📈 Indicateurs Clés")
+date_fichier = file_info['date_modification'].strftime("%d/%m/%Y")
+st.markdown(f"### 📈 KPIs Articles ({date_fichier})")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
@@ -169,7 +160,7 @@ with col2:
     
 with col3:
     valeur_stock = (df_filtered['Stock réel'] * df_filtered['Prix d\'achat']).sum()
-    st.metric("Valeur du stock", f"{valeur_stock:,.0f} €")
+    st.metric("Valeur du stock", f"{valeur_stock:,.0f} DH")
     
 with col4:
     marge_moyenne = df_filtered['Marge %'].mean()
@@ -177,7 +168,7 @@ with col4:
     
 with col5:
     prix_moyen = df_filtered['Prix de vente'].mean()
-    st.metric("Prix moyen", f"{prix_moyen:.2f} €")
+    st.metric("Prix moyen", f"{prix_moyen:.2f} DH")
 
 st.markdown("---")
 
@@ -233,17 +224,38 @@ with col1:
     st.plotly_chart(fig_marge, use_container_width=True)
 
 with col2:
-    fig_prix = px.scatter(
-        df_filtered,
-        x='Prix d\'achat',
-        y='Prix de vente',
-        size='Stock réel',
-        color='Marge %',
-        hover_data=['Désignation', 'Famille'],
-        title="Relation Prix d'achat vs Prix de vente",
-        labels={'Prix d\'achat': 'Prix d\'achat (€)', 'Prix de vente': 'Prix de vente (€)'}
-    )
-    st.plotly_chart(fig_prix, use_container_width=True)
+    # Filtrer les valeurs NaN pour éviter les erreurs
+    df_scatter = df_filtered[
+        df_filtered['Prix d\'achat'].notna() & 
+        df_filtered['Prix de vente'].notna()
+    ].copy()
+    
+    if len(df_scatter) > 0:
+        # Remplacer les valeurs NaN par 0 pour size et color
+        df_scatter['Stock réel'] = df_scatter['Stock réel'].fillna(0)
+        df_scatter['Marge %'] = df_scatter['Marge %'].fillna(0)
+        
+        # S'assurer que les valeurs sont numériques
+        df_scatter['Stock réel'] = pd.to_numeric(df_scatter['Stock réel'], errors='coerce').fillna(0)
+        df_scatter['Marge %'] = pd.to_numeric(df_scatter['Marge %'], errors='coerce').fillna(0)
+        
+        # Utiliser size_max pour limiter la taille des points
+        max_stock = df_scatter['Stock réel'].max() if df_scatter['Stock réel'].max() > 0 else 1
+        
+        fig_prix = px.scatter(
+            df_scatter,
+            x='Prix d\'achat',
+            y='Prix de vente',
+            size='Stock réel',
+            size_max=50,
+            color='Marge %',
+            hover_data=['Désignation', 'Famille'],
+            title="Relation Prix d'achat vs Prix de vente",
+            labels={'Prix d\'achat': 'Prix d\'achat (DH)', 'Prix de vente': 'Prix de vente (DH)'}
+        )
+        st.plotly_chart(fig_prix, use_container_width=True)
+    else:
+        st.info("Pas assez de données pour afficher le graphique")
 
 # Analyse du stock
 st.markdown("### 📦 Analyse du Stock")
