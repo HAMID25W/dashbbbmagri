@@ -98,6 +98,19 @@ else:
     if 'Famille' in df.columns:
         familles = ['Toutes'] + sorted(df['Famille'].dropna().unique().tolist())
         famille_selected = st.sidebar.selectbox("Famille", familles, key="famille_articles")
+        
+        # Bouton pour télécharger les données de la famille sélectionnée
+        if famille_selected != 'Toutes':
+            famille_filtered = df[df['Famille'] == famille_selected]
+            if len(famille_filtered) > 0:
+                csv_famille = famille_filtered.to_csv(index=False).encode('utf-8-sig')
+                st.sidebar.download_button(
+                    label=f"📥 Télécharger famille: {famille_selected}",
+                    data=csv_famille,
+                    file_name=f"articles_famille_{famille_selected}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                    mime="text/csv",
+                    key="download_famille"
+                )
     else:
         famille_selected = 'Toutes'
     
