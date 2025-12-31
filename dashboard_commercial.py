@@ -172,6 +172,13 @@ with col5:
 
 st.markdown("---")
 
+# Configuration des graphiques Plotly (pas de barre d'outils, plein écran sur double-clic)
+plotly_config = {
+    'displayModeBar': False,  # Cache la barre d'outils
+    'doubleClick': 'reset',  # Double-clic pour plein écran
+    'displaylogo': False,    # Cache le logo Plotly
+}
+
 # Graphiques
 col1, col2 = st.columns(2)
 
@@ -189,7 +196,7 @@ with col1:
         names='Famille',
         title="Top 10 Familles"
     )
-    st.plotly_chart(fig_famille, use_container_width=True)
+    st.plotly_chart(fig_famille, use_container_width=True, config=plotly_config)
 
 with col2:
     st.markdown("### 📊 Répartition par Fournisseur")
@@ -207,7 +214,7 @@ with col2:
         labels={'Fournisseur': 'Fournisseur', 'Nombre': 'Nombre d\'articles'}
     )
     fig_fournisseur.update_xaxes(tickangle=45)
-    st.plotly_chart(fig_fournisseur, use_container_width=True)
+    st.plotly_chart(fig_fournisseur, use_container_width=True, config=plotly_config)
 
 # Graphique de marge
 st.markdown("### 💰 Analyse des Marges")
@@ -221,7 +228,7 @@ with col1:
         title="Distribution des marges (%)",
         labels={'Marge %': 'Marge (%)', 'count': 'Nombre d\'articles'}
     )
-    st.plotly_chart(fig_marge, use_container_width=True)
+    st.plotly_chart(fig_marge, use_container_width=True, config=plotly_config)
 
 with col2:
     # Filtrer les valeurs NaN pour éviter les erreurs
@@ -253,7 +260,7 @@ with col2:
             title="Relation Prix d'achat vs Prix de vente",
             labels={'Prix d\'achat': 'Prix d\'achat (DH)', 'Prix de vente': 'Prix de vente (DH)'}
         )
-        st.plotly_chart(fig_prix, use_container_width=True)
+        st.plotly_chart(fig_prix, use_container_width=True, config=plotly_config)
     else:
         st.info("Pas assez de données pour afficher le graphique")
 
