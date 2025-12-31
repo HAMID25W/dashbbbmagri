@@ -74,8 +74,15 @@ if uploaded_file is not None:
     with open('1.xlsx', 'wb') as f:
         f.write(uploaded_file.getbuffer())
     st.sidebar.success("✅ Fichier téléchargé avec succès !")
-    st.sidebar.info("🔄 Rechargez la page pour voir les nouvelles données")
+    # Vider le cache pour recharger les nouvelles données
     st.cache_data.clear()
+    st.rerun()  # Redémarre l'application automatiquement
+
+# Bouton de rafraîchissement manuel
+st.sidebar.markdown("---")
+if st.sidebar.button("🔄 Actualiser les données", use_container_width=True):
+    st.cache_data.clear()
+    st.rerun()
 
 # Charger les données
 df, file_info = load_data()
