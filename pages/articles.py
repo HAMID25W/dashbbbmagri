@@ -50,7 +50,7 @@ plotly_config = {
     'doubleClick': 'reset',
 }
 
-# En-tête avec boutons Source Articles et Actualiser
+# En-tête avec boutons Sources_Articles et Actualiser
 col_title, col_buttons = st.columns([3, 1])
 with col_title:
     st.title("📦 ARTICLES")
@@ -118,7 +118,7 @@ with col_buttons:
         }
         /* Ajouter "Source_Articles" comme seul texte visible */
         div[data-testid="stFileUploader"] button::before {
-            content: "Source_Articles" !important;
+            content: "Sources_Articles" !important;
             opacity: 1 !important;
             font-size: 0.85rem !important;
             position: absolute !important;
@@ -143,7 +143,7 @@ with col_buttons:
         </style>
         """, unsafe_allow_html=True)
         uploaded_file_articles = st.file_uploader(
-            "Source_Articles",
+            "Sources_Articles",
             type=['xlsx', 'xls', 'csv'],
             help="Cliquez pour télécharger le fichier Excel ou CSV",
             key="upload_articles",
